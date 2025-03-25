@@ -1,0 +1,1882 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>习惯养成 App 原型</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f7;
+            padding: 20px;
+        }
+        
+        .prototype-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+        }
+        
+        .screen {
+            width: 375px;
+            height: 812px;
+            background-color: white;
+            border-radius: 40px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        
+        .screen-title {
+            text-align: center;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .status-bar {
+            height: 44px;
+            background-color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .time {
+            font-weight: 600;
+        }
+        
+        .status-icons {
+            display: flex;
+            gap: 5px;
+        }
+        
+        .content {
+            padding: 20px;
+            height: calc(100% - 44px - 83px);
+            overflow-y: auto;
+        }
+        
+        .tab-bar {
+            height: 83px;
+            background-color: white;
+            border-top: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding-bottom: 20px;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        .tab {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #999;
+        }
+        
+        .tab.active {
+            color: #007AFF;
+        }
+        
+        .tab i {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .tab-label {
+            font-size: 12px;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .greeting {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        .avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .stats {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .stat-card {
+            flex: 1;
+            background-color: #f8f8f8;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #007AFF;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            margin-bottom: 15px;
+            margin-top: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .see-all {
+            font-size: 14px;
+            color: #007AFF;
+            font-weight: 400;
+        }
+        
+        .habit-card {
+            background-color: #f8f8f8;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .habit-info {
+            flex: 1;
+        }
+        
+        .habit-name {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .habit-details {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .habit-streak {
+            background-color: #007AFF;
+            color: white;
+            border-radius: 10px;
+            padding: 5px 10px;
+            font-weight: 600;
+        }
+        
+        .habit-check {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            border: 2px solid #007AFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #007AFF;
+        }
+        
+        .habit-check.completed {
+            background-color: #007AFF;
+            color: white;
+        }
+        
+        .chart {
+            background-color: #f8f8f8;
+            border-radius: 15px;
+            padding: 20px;
+            height: 200px;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 15px;
+        }
+        
+        .chart-title {
+            font-weight: 600;
+        }
+        
+        .chart-period {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .chart-bars {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            height: 120px;
+            margin-top: auto;
+        }
+        
+        .chart-bar {
+            width: 8%;
+            background-color: #007AFF;
+            border-radius: 5px 5px 0 0;
+        }
+        
+        .chart-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+        
+        .chart-label {
+            width: 8%;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: block;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            font-size: 16px;
+        }
+        
+        .form-select {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            font-size: 16px;
+            background-color: white;
+        }
+        
+        .form-textarea {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e0e0e0;
+            font-size: 16px;
+            height: 100px;
+            resize: none;
+        }
+        
+        .button {
+            width: 100%;
+            padding: 18px;
+            border-radius: 15px;
+            border: none;
+            font-size: 18px;
+            font-weight: 600;
+            margin-top: 20px;
+            cursor: pointer;
+        }
+        
+        .button-primary {
+            background-color: #007AFF;
+            color: white;
+        }
+        
+        .button-secondary {
+            background-color: #f8f8f8;
+            color: #333;
+        }
+        
+        .cue-card {
+            background-color: #f8f8f8;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .cue-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .cue-title i {
+            margin-right: 10px;
+            color: #007AFF;
+        }
+        
+        .cue-description {
+            font-size: 14px;
+            color: #666;
+            margin-left: 30px;
+        }
+        
+        .habit-detail-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .habit-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            background-color: #007AFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            margin-right: 15px;
+        }
+        
+        .habit-detail-info {
+            flex: 1;
+        }
+        
+        .habit-detail-name {
+            font-size: 22px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .habit-detail-subtitle {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .calendar {
+            background-color: #f8f8f8;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .calendar-title {
+            font-weight: 600;
+        }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+        }
+        
+        .calendar-day {
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .calendar-date {
+            aspect-ratio: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            font-size: 14px;
+        }
+        
+        .calendar-date.completed {
+            background-color: #007AFF;
+            color: white;
+        }
+        
+        .calendar-date.today {
+            border: 2px solid #007AFF;
+        }
+        
+        .profile-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .profile-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            margin: 0 auto 15px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            color: #999;
+        }
+        
+        .profile-name {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+        
+        .profile-email {
+            font-size: 16px;
+            color: #666;
+        }
+        
+        .menu-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            background-color: #f8f8f8;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .menu-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: 15px;
+            color: #666;
+        }
+        
+        .menu-text {
+            flex: 1;
+            font-weight: 500;
+        }
+        
+        .menu-arrow {
+            color: #999;
+        }
+        
+        .community-card {
+            background-color: #f8f8f8;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .community-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .community-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+            margin-right: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #999;
+        }
+        
+        .community-name {
+            font-weight: 600;
+        }
+        
+        .community-time {
+            margin-left: auto;
+            font-size: 14px;
+            color: #999;
+        }
+        
+        .community-content {
+            margin-bottom: 15px;
+        }
+        
+        .community-actions {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .community-action {
+            display: flex;
+            align-items: center;
+            color: #666;
+            font-size: 14px;
+        }
+        
+        .community-action i {
+            margin-right: 5px;
+        }
+        
+        .onboarding-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            padding: 0 30px;
+        }
+        
+        .onboarding-image {
+            width: 250px;
+            height: 250px;
+            background-color: #f0f0f0;
+            border-radius: 20px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 80px;
+            color: #007AFF;
+        }
+        
+        .onboarding-title {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+        
+        .onboarding-description {
+            font-size: 16px;
+            color: #666;
+            margin-bottom: 40px;
+        }
+        
+        .onboarding-dots {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 40px;
+        }
+        
+        .onboarding-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: #e0e0e0;
+        }
+        
+        .onboarding-dot.active {
+            background-color: #007AFF;
+        }
+        
+        .notification {
+            display: flex;
+            background-color: #f8f8f8;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .notification-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 15px;
+            background-color: #007AFF;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            margin-right: 15px;
+        }
+        
+        .notification-content {
+            flex: 1;
+        }
+        
+        .notification-title {
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+        
+        .notification-message {
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .notification-time {
+            font-size: 12px;
+            color: #999;
+            margin-top: 5px;
+        }
+        
+        .search-bar {
+            display: flex;
+            background-color: #f0f0f0;
+            border-radius: 10px;
+            padding: 12px 15px;
+            margin-bottom: 20px;
+        }
+        
+        .search-icon {
+            color: #999;
+            margin-right: 10px;
+        }
+        
+        .search-input {
+            flex: 1;
+            border: none;
+            background: transparent;
+            font-size: 16px;
+        }
+        
+        .reflection-card {
+            background-color: #f8f8f8;
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 15px;
+        }
+        
+        .reflection-date {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 10px;
+        }
+        
+        .reflection-content {
+            margin-bottom: 15px;
+        }
+        
+        .reflection-habits {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .reflection-habit {
+            background-color: #e0e0e0;
+            border-radius: 20px;
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+        
+        .toggle-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .toggle-label {
+            font-weight: 500;
+        }
+        
+        .toggle {
+            width: 50px;
+            height: 30px;
+            background-color: #e0e0e0;
+            border-radius: 15px;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .toggle.active {
+            background-color: #007AFF;
+        }
+        
+        .toggle-handle {
+            width: 26px;
+            height: 26px;
+            background-color: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: transform 0.2s;
+        }
+        
+        .toggle.active .toggle-handle {
+            transform: translateX(20px);
+        }
+    </style>
+</head>
+<body>
+    <div class="prototype-container">
+        <!-- 欢迎页 -->
+        <div>
+            <h2 class="screen-title">欢迎页</h2>
+            <div class="screen">
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="status-icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="onboarding-content">
+                        <div class="onboarding-image">
+                            <i class="fas fa-seedling"></i>
+                        </div>
+                        <h1 class="onboarding-title">欢迎使用习惯养成</h1>
+                        <p class="onboarding-description">通过科学的方法培养好习惯，改变你的生活</p>
+                        <div class="onboarding-dots">
+                            <div class="onboarding-dot active"></div>
+                            <div class="onboarding-dot"></div>
+                            <div class="onboarding-dot"></div>
+                        </div>
+                        <button class="button button-primary">开始使用</button>
+                        <button class="button button-secondary">已有账号？登录</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 主页 -->
+        <div>
+            <h2 class="screen-title">主页</h2>
+            <div class="screen">
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="status-icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="header">
+                        <div class="greeting">你好，小明</div>
+                        <div class="avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="stats">
+                        <div class="stat-card">
+                            <div class="stat-value">7</div>
+                            <div class="stat-label">习惯总数</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">5</div>
+                            <div class="stat-label">今日完成</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">21</div>
+                            <div class="stat-label">连续天数</div>
+                        </div>
+                    </div>
+                    
+                    <div class="section-title">
+                        <span>今日习惯</span>
+                        <span class="see-all">查看全部</span>
+                    </div>
+                    
+                    <div class="habit-card">
+                        <div class="habit-info">
+                            <div class="habit-name">晨间阅读</div>
+                            <div class="habit-details">每天 7:00 · <span class="habit-streak">连续 15 天</span></div>
+                        </div>
+                        <div class="habit-check completed">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="habit-card">
+                        <div class="habit-info">
+                            <div class="habit-name">冥想</div>
+                            <div class="habit-details">每天 8:00 · <span class="habit-streak">连续 21 天</span></div>
+                        </div>
+                        <div class="habit-check completed">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="habit-card">
+                        <div class="habit-info">
+                            <div class="habit-name">喝水</div>
+                            <div class="habit-details">每天 4 次 · <span class="habit-streak">连续 7 天</span></div>
+                        </div>
+                        <div class="habit-check completed">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="habit-card">
+                        <div class="habit-info">
+                            <div class="habit-name">锻炼</div>
+                            <div class="habit-details">每天 18:00 · <span class="habit-streak">连续 5 天</span></div>
+                        </div>
+                        <div class="habit-check">
+                        </div>
+                    </div>
+                    
+                    <div class="section-title">
+                        <span>习惯进度</span>
+                        <span class="see-all">更多</span>
+                    </div>
+                    
+                    <div class="chart">
+                        <div class="chart-header">
+                            <div class="chart-title">完成率</div>
+                            <div class="chart-period">本周</div>
+                        </div>
+                        <div class="chart-bars">
+                            <div class="chart-bar" style="height: 80%;"></div>
+                            <div class="chart-bar" style="height: 90%;"></div>
+                            <div class="chart-bar" style="height: 70%;"></div>
+                            <div class="chart-bar" style="height: 85%;"></div>
+                            <div class="chart-bar" style="height: 75%;"></div>
+                            <div class="chart-bar" style="height: 60%;"></div>
+                            <div class="chart-bar" style="height: 40%;"></div>
+                        </div>
+                        <div class="chart-labels">
+                            <div class="chart-label">一</div>
+                            <div class="chart-label">二</div>
+                            <div class="chart-label">三</div>
+                            <div class="chart-label">四</div>
+                            <div class="chart-label">五</div>
+                            <div class="chart-label">六</div>
+                            <div class="chart-label">日</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-bar">
+                    <div class="tab active">
+                        <i class="fas fa-home"></i>
+                        <div class="tab-label">首页</div>
+                    </div>
+                    <div class="tab">
+                        <i class="fas fa-list-check"></i>
+                        <div class="tab-label">习惯</div>
+                    </div>
+                    <div class="tab">
+                        <i class="fas fa-plus-circle"></i>
+                        <div class="tab-label">添加</div>
+                    </div>
+                    <div class="tab">
+                        <i class="fas fa-users"></i>
+                        <div class="tab-label">社区</div>
+                    </div>
+                    <div class="tab">
+                        <i class="fas fa-user"></i>
+                        <div class="tab-label">我的</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 习惯列表 -->
+        <div>
+            <h2 class="screen-title">习惯列表</h2>
+            <div class="screen">
+                <div class="status-bar">
+                    <div class="time">9:41</div>
+                    <div class="status-icons">
+                        <i class="fas fa-signal"></i>
+                        <i class="fas fa-wifi"></i>
+                        <i class="fas fa-battery-full"></i>
+                    </div>
+                </div>
+                <div class="content">
+                    <div class="search-bar">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" class="search-input" placeholder="搜索习惯">
+                    </div>
+                    
+                    <div class="section-title">
+                        <span>所有习惯</span>
+                        <span class="see-all"><i class="fas fa-sliders"></i> 筛选</span>
+                    </div>
+                    
+                    <div class="habit-card">
+                        <div class="habit-info">
+                            <div class="habit-name">晨间阅读</div>
+                            <div class="habit-details">每天 7:00 · <span class="habit-streak">连续 15 天</span></div>
+                        </div>
+                        <div class="habit-check completed">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="habit-card">
+                        <div class="habit-info">
+                            <div class="habit-name">冥想</div>
+                            <div class="habit-details">每天 8:00 · <span class="habit-streak">连续 21 天</span></div>
+                        </div>
+                        <div class="habit-check completed">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="habit-card">
+                        <div class="habit-info">
+                            <div class="habit-name">喝水</div>
+                            <div class="habit-details">每天 4 次 · <span class="habit-streak">连续 7 天</span></div>
+                        </div>
+                        <div class="habit-check completed">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="habit-card">
+                        <div class="habit-info">
+                            <div class="habit-name">锻炼</div>
+                            <div class="habit-details">每天 18:00 · <span class="habit-streak">连续 5 天</span></div>
+                        </div>
+                        <div class="habit-check">
+                        </div>
+                    </div>
+                    
+                    <div class="habit-card">
+                        <div class="habit-info">
+                            <div class="habit-name">写日记</div>
+                            <div class="habit-details">每天 22:00 · <span class="habit-streak">连续 3 天</span></div>
+                        </div>
+                        <div class="habit-check completed">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+                    
+                    <div class="habit-card">
+                        <div class="habit-info">
+                            <div class="habit-name">学习编程</div>
+                            <div class="habit-details">每周一三五 · <span class="habit-streak">连续 2 周</span></div>
+                        </div>
+                        <div class="habit-check">
+                        </div>
+                    </div>
+                    
+                    <div class="habit-card">
+                        <div class="habit-info">
+                            <div class="habit-name">整理房间</div>
+                            <div class="habit-details">每周六日 · <span class="habit-streak">连续 4 周</span></div>
+                        </div>
+                        <div class="habit-check">
+                        </div>
+                    </div>
+                </div>
+                <div class="tab-bar">
+                    <div class="tab active">
+                        <i class="fas fa-home"></i>
+                        <div class="tab-label">首页</div>
+                    </div>
+                    <div class="tab active">
+                        <i class="fas fa-list-check"></i>
+                        <div class="tab-label">习惯</div>
+                    </div>
+                    <div class="tab">
+                        <i class="fas fa-plus-circle"></i>
+                        <div class="tab-label">添加</div>
+                    </div>
+                    <div class="tab">
+                        <i class="fas fa-users"></i>
+                        <div class="tab-label">社区</div>
+                    </div>
+                    <div class="tab">
+                        <i class="fas fa-user"></i>
+                        <div class="tab-label">我的</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 添加习惯 -->
+            <div>
+                <h2 class="screen-title">添加习惯</h2>
+                <div class="screen">
+                    <div class="status-bar">
+                        <div class="time">9:41</div>
+                        <div class="status-icons">
+                            <i class="fas fa-signal"></i>
+                            <i class="fas fa-wifi"></i>
+                            <i class="fas fa-battery-full"></i>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="header">
+                            <div class="greeting">创建新习惯</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">习惯名称</label>
+                            <input type="text" class="form-input" placeholder="例如：晨跑、阅读">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">图标和颜色</label>
+                            <div style="display: flex; gap: 10px; overflow-x: auto; padding: 5px 0;">
+                                <div style="width: 50px; height: 50px; border-radius: 15px; background-color: #007AFF; display: flex; justify-content: center; align-items: center; color: white;">
+                                    <i class="fas fa-book"></i>
+                                </div>
+                                <div style="width: 50px; height: 50px; border-radius: 15px; background-color: #FF2D55; display: flex; justify-content: center; align-items: center; color: white;">
+                                    <i class="fas fa-heart"></i>
+                                </div>
+                                <div style="width: 50px; height: 50px; border-radius: 15px; background-color: #5856D6; display: flex; justify-content: center; align-items: center; color: white;">
+                                    <i class="fas fa-dumbbell"></i>
+                                </div>
+                                <div style="width: 50px; height: 50px; border-radius: 15px; background-color: #FF9500; display: flex; justify-content: center; align-items: center; color: white;">
+                                    <i class="fas fa-running"></i>
+                                </div>
+                                <div style="width: 50px; height: 50px; border-radius: 15px; background-color: #4CD964; display: flex; justify-content: center; align-items: center; color: white;">
+                                    <i class="fas fa-apple-alt"></i>
+                                </div>
+                                <div style="width: 50px; height: 50px; border-radius: 15px; background-color: #5AC8FA; display: flex; justify-content: center; align-items: center; color: white;">
+                                    <i class="fas fa-tint"></i>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">频率</label>
+                            <select class="form-select">
+                                <option>每天</option>
+                                <option>每周</option>
+                                <option>自定义</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">时间</label>
+                            <select class="form-select">
+                                <option>早晨</option>
+                                <option>中午</option>
+                                <option>晚上</option>
+                                <option>自定义时间</option>
+                            </select>
+                        </div>
+                        
+                        <div class="section-title">
+                            <span>习惯设计</span>
+                            <span class="see-all">了解更多</span>
+                        </div>
+                        
+                        <div class="cue-card">
+                            <div class="cue-title">
+                                <i class="fas fa-eye"></i> 明显的线索
+                            </div>
+                            <div class="cue-description">
+                                在什么情境下执行这个习惯？
+                            </div>
+                            <input type="text" class="form-input" placeholder="例如：起床后、吃完早餐后" style="margin-top: 10px;">
+                        </div>
+                        
+                        <div class="cue-card">
+                            <div class="cue-title">
+                                <i class="fas fa-heart"></i> 有吸引力
+                            </div>
+                            <div class="cue-description">
+                                这个习惯如何让你感到愉悦？
+                            </div>
+                            <input type="text" class="form-input" placeholder="例如：听喜欢的音乐、与朋友一起" style="margin-top: 10px;">
+                        </div>
+                        
+                        <div class="cue-card">
+                            <div class="cue-title">
+                                <i class="fas fa-check"></i> 简单易行
+                            </div>
+                            <div class="cue-description">
+                                如何降低执行难度？
+                            </div>
+                            <input type="text" class="form-input" placeholder="例如：只读一页书、只跑5分钟" style="margin-top: 10px;">
+                        </div>
+                        
+                        <div class="cue-card">
+                            <div class="cue-title">
+                                <i class="fas fa-smile"></i> 令人满足
+                            </div>
+                            <div class="cue-description">
+                                完成后如何奖励自己？
+                            </div>
+                            <input type="text" class="form-input" placeholder="例如：记录成就、小小的奖励" style="margin-top: 10px;">
+                        </div>
+                        
+                        <button class="button button-primary">创建习惯</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 习惯详情 -->
+            <div>
+                <h2 class="screen-title">习惯详情</h2>
+                <div class="screen">
+                    <div class="status-bar">
+                        <div class="time">9:41</div>
+                        <div class="status-icons">
+                            <i class="fas fa-signal"></i>
+                            <i class="fas fa-wifi"></i>
+                            <i class="fas fa-battery-full"></i>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="habit-detail-header">
+                            <div class="habit-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="habit-detail-info">
+                                <div class="habit-detail-name">晨间阅读</div>
+                                <div class="habit-detail-subtitle">每天 7:00 · 连续 15 天</div>
+                            </div>
+                        </div>
+                        
+                        <div class="stats">
+                            <div class="stat-card">
+                                <div class="stat-value">15</div>
+                                <div class="stat-label">连续天数</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">92%</div>
+                                <div class="stat-label">完成率</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">45</div>
+                                <div class="stat-label">总完成次数</div>
+                            </div>
+                        </div>
+                        
+                        <div class="calendar">
+                            <div class="calendar-header">
+                                <div class="calendar-title">2023年6月</div>
+                                <div>
+                                    <i class="fas fa-chevron-left" style="margin-right: 15px;"></i>
+                                    <i class="fas fa-chevron-right"></i>
+                                </div>
+                            </div>
+                            <div class="calendar-grid">
+                                <div class="calendar-day">一</div>
+                                <div class="calendar-day">二</div>
+                                <div class="calendar-day">三</div>
+                                <div class="calendar-day">四</div>
+                                <div class="calendar-day">五</div>
+                                <div class="calendar-day">六</div>
+                                <div class="calendar-day">日</div>
+                                
+                                <div class="calendar-date"></div>
+                                <div class="calendar-date"></div>
+                                <div class="calendar-date"></div>
+                                <div class="calendar-date">1</div>
+                                <div class="calendar-date completed">2</div>
+                                <div class="calendar-date completed">3</div>
+                                <div class="calendar-date completed">4</div>
+                                
+                                <div class="calendar-date completed">5</div>
+                                <div class="calendar-date completed">6</div>
+                                <div class="calendar-date completed">7</div>
+                                <div class="calendar-date completed">8</div>
+                                <div class="calendar-date completed">9</div>
+                                <div class="calendar-date completed">10</div>
+                                <div class="calendar-date completed">11</div>
+                                
+                                <div class="calendar-date completed">12</div>
+                                <div class="calendar-date completed">13</div>
+                                <div class="calendar-date completed">14</div>
+                                <div class="calendar-date completed">15</div>
+                                <div class="calendar-date completed">16</div>
+                                <div class="calendar-date today completed">17</div>
+                                <div class="calendar-date">18</div>
+                                
+                                <div class="calendar-date">19</div>
+                                <div class="calendar-date">20</div>
+                                <div class="calendar-date">21</div>
+                                <div class="calendar-date">22</div>
+                                <div class="calendar-date">23</div>
+                                <div class="calendar-date">24</div>
+                                <div class="calendar-date">25</div>
+                                
+                                <div class="calendar-date">26</div>
+                                <div class="calendar-date">27</div>
+                                <div class="calendar-date">28</div>
+                                <div class="calendar-date">29</div>
+                                <div class="calendar-date">30</div>
+                                <div class="calendar-date"></div>
+                                <div class="calendar-date"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="section-title">
+                            <span>习惯设计</span>
+                        </div>
+                        
+                        <div class="cue-card">
+                            <div class="cue-title">
+                                <i class="fas fa-eye"></i> 明显的线索
+                            </div>
+                            <div class="cue-description">
+                                起床后，在喝咖啡前先阅读
+                            </div>
+                        </div>
+                        
+                        <div class="cue-card">
+                            <div class="cue-title">
+                                <i class="fas fa-heart"></i> 有吸引力
+                            </div>
+                            <div class="cue-description">
+                                选择感兴趣的书籍，在舒适的角落阅读
+                            </div>
+                        </div>
+                        
+                        <div class="cue-card">
+                            <div class="cue-title">
+                                <i class="fas fa-check"></i> 简单易行
+                            </div>
+                            <div class="cue-description">
+                                每天只需阅读10分钟或5页
+                            </div>
+                        </div>
+                        
+                        <div class="cue-card">
+                            <div class="cue-title">
+                                <i class="fas fa-smile"></i> 令人满足
+                            </div>
+                            <div class="cue-description">
+                                记录阅读笔记，与朋友分享有趣的内容
+                            </div>
+                        </div>
+                        
+                        <div class="section-title">
+                            <span>反思记录</span>
+                            <span class="see-all">添加</span>
+                        </div>
+                        
+                        <div class="reflection-card">
+                            <div class="reflection-date">2023年6月10日</div>
+                            <div class="reflection-content">
+                                今天的阅读非常顺利，发现早上的注意力比晚上好很多。已经养成了起床后直接拿起书的习惯，不再需要提醒。
+                            </div>
+                        </div>
+                        
+                        <button class="button button-primary">今日打卡</button>
+                        <button class="button button-secondary">编辑习惯</button>
+                    </div>
+                </div>
+            </div>
+        
+            <!-- 社区页面 -->
+            <div>
+                <h2 class="screen-title">社区</h2>
+                <div class="screen">
+                    <div class="status-bar">
+                        <div class="time">9:41</div>
+                        <div class="status-icons">
+                            <i class="fas fa-signal"></i>
+                            <i class="fas fa-wifi"></i>
+                            <i class="fas fa-battery-full"></i>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="search-bar">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" class="search-input" placeholder="搜索话题或用户">
+                        </div>
+                        
+                        <div class="community-card">
+                            <div class="community-header">
+                                <div class="community-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="community-name">李小明</div>
+                                <div class="community-time">2小时前</div>
+                            </div>
+                            <div class="community-content">
+                                <p>今天是我连续跑步的第30天！感谢这个App帮我养成了这个好习惯，现在每天早上不跑步反而会觉得不舒服了。</p>
+                                <div style="margin-top: 10px; background-color: #e0e0e0; border-radius: 10px; padding: 10px; font-size: 14px; color: #666;">
+                                    <i class="fas fa-running" style="color: #007AFF; margin-right: 5px;"></i> 晨跑 · 连续30天
+                                </div>
+                            </div>
+                            <div class="community-actions">
+                                <div class="community-action">
+                                    <i class="fas fa-heart"></i> 45
+                                </div>
+                                <div class="community-action">
+                                    <i class="fas fa-comment"></i> 12
+                                </div>
+                                <div class="community-action">
+                                    <i class="fas fa-share"></i> 分享
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="community-card">
+                            <div class="community-header">
+                                <div class="community-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="community-name">张三</div>
+                                <div class="community-time">5小时前</div>
+                            </div>
+                            <div class="community-content">
+                                <p>分享一个让习惯坚持下去的小技巧：把习惯和已有的行为绑定在一起。比如我现在每次刷牙前都会先做10个俯卧撑，已经坚持了两个月了！</p>
+                            </div>
+                            <div class="community-actions">
+                                <div class="community-action">
+                                    <i class="fas fa-heart"></i> 78
+                                </div>
+                                <div class="community-action">
+                                    <i class="fas fa-comment"></i> 23
+                                </div>
+                                <div class="community-action">
+                                    <i class="fas fa-share"></i> 分享
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="community-card">
+                            <div class="community-header">
+                                <div class="community-avatar">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <div class="community-name">王五</div>
+                                <div class="community-time">昨天</div>
+                            </div>
+                            <div class="community-content">
+                                <p>有没有人在用这个App学习新语言？我想找一些学习伙伴一起打卡。</p>
+                                <div style="margin-top: 10px; background-color: #e0e0e0; border-radius: 10px; padding: 10px; font-size: 14px; color: #666;">
+                                    <i class="fas fa-language" style="color: #FF9500; margin-right: 5px;"></i> 学习英语 · 连续15天
+                                </div>
+                            </div>
+                            <div class="community-actions">
+                                <div class="community-action">
+                                    <i class="fas fa-heart"></i> 32
+                                </div>
+                                <div class="community-action">
+                                    <i class="fas fa-comment"></i> 45
+                                </div>
+                                <div class="community-action">
+                                    <i class="fas fa-share"></i> 分享
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-bar">
+                        <div class="tab">
+                            <i class="fas fa-home"></i>
+                            <div class="tab-label">首页</div>
+                        </div>
+                        <div class="tab">
+                            <i class="fas fa-list-check"></i>
+                            <div class="tab-label">习惯</div>
+                        </div>
+                        <div class="tab">
+                            <i class="fas fa-plus-circle"></i>
+                            <div class="tab-label">添加</div>
+                        </div>
+                        <div class="tab active">
+                            <i class="fas fa-users"></i>
+                            <div class="tab-label">社区</div>
+                        </div>
+                        <div class="tab">
+                            <i class="fas fa-user"></i>
+                            <div class="tab-label">我的</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 个人中心 -->
+            <div>
+                <h2 class="screen-title">个人中心</h2>
+                <div class="screen">
+                    <div class="status-bar">
+                        <div class="time">9:41</div>
+                        <div class="status-icons">
+                            <i class="fas fa-signal"></i>
+                            <i class="fas fa-wifi"></i>
+                            <i class="fas fa-battery-full"></i>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="profile-header">
+                            <div class="profile-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="profile-name">小明</div>
+                            <div class="profile-email">xiaoming@example.com</div>
+                        </div>
+                        
+                        <div class="stats">
+                            <div class="stat-card">
+                                <div class="stat-value">7</div>
+                                <div class="stat-label">习惯总数</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">85%</div>
+                                <div class="stat-label">完成率</div>
+                            </div>
+                            <div class="stat-card">
+                                <div class="stat-value">21</div>
+                                <div class="stat-label">最长连续</div>
+                            </div>
+                        </div>
+                        
+                        <div class="section-title">
+                            <span>设置</span>
+                        </div>
+                        
+                        <div class="menu-item">
+                            <div class="menu-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <div class="menu-text">提醒设置</div>
+                            <div class="menu-arrow">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="menu-item">
+                            <div class="menu-icon">
+                                <i class="fas fa-user-friends"></i>
+                            </div>
+                            <div class="menu-text">好友管理</div>
+                            <div class="menu-arrow">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="menu-item">
+                            <div class="menu-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="menu-text">数据统计</div>
+                            <div class="menu-arrow">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="menu-item">
+                            <div class="menu-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <div class="menu-text">习惯指南</div>
+                            <div class="menu-arrow">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="menu-item">
+                            <div class="menu-icon">
+                                <i class="fas fa-cog"></i>
+                            </div>
+                            <div class="menu-text">通用设置</div>
+                            <div class="menu-arrow">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="menu-item">
+                            <div class="menu-icon" style="background-color: #ffeeee; color: #ff3b30;">
+                                <i class="fas fa-sign-out-alt"></i>
+                            </div>
+                            <div class="menu-text" style="color: #ff3b30;">退出登录</div>
+                        </div>
+                    </div>
+                    <div class="tab-bar">
+                        <div class="tab">
+                            <i class="fas fa-home"></i>
+                            <div class="tab-label">首页</div>
+                        </div>
+                        <div class="tab">
+                            <i class="fas fa-list-check"></i>
+                            <div class="tab-label">习惯</div>
+                        </div>
+                        <div class="tab">
+                            <i class="fas fa-plus-circle"></i>
+                            <div class="tab-label">添加</div>
+                        </div>
+                        <div class="tab">
+                            <i class="fas fa-users"></i>
+                            <div class="tab-label">社区</div>
+                        </div>
+                        <div class="tab active">
+                            <i class="fas fa-user"></i>
+                            <div class="tab-label">我的</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 习惯反思 -->
+            <div>
+                <h2 class="screen-title">习惯反思</h2>
+                <div class="screen">
+                    <div class="status-bar">
+                        <div class="time">9:41</div>
+                        <div class="status-icons">
+                            <i class="fas fa-signal"></i>
+                            <i class="fas fa-wifi"></i>
+                            <i class="fas fa-battery-full"></i>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="header">
+                            <div class="greeting">习惯反思</div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">选择习惯</label>
+                            <select class="form-select">
+                                <option>晨间阅读</option>
+                                <option>冥想</option>
+                                <option>喝水</option>
+                                <option>锻炼</option>
+                                <option>写日记</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">今天的感受如何？</label>
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 15px;">
+                                <div style="text-align: center;">
+                                    <div style="font-size: 30px;">😞</div>
+                                    <div style="font-size: 12px; margin-top: 5px;">困难</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 30px;">😐</div>
+                                    <div style="font-size: 12px; margin-top: 5px;">一般</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 30px;">🙂</div>
+                                    <div style="font-size: 12px; margin-top: 5px;">还好</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 30px;">😊</div>
+                                    <div style="font-size: 12px; margin-top: 5px;">顺利</div>
+                                </div>
+                                <div style="text-align: center;">
+                                    <div style="font-size: 30px;">😃</div>
+                                    <div style="font-size: 12px; margin-top: 5px;">很棒</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">记录你的想法</label>
+                            <textarea class="form-textarea" placeholder="今天执行这个习惯时有什么感受？遇到了什么困难？有什么收获？"></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">如何改进？</label>
+                            <textarea class="form-textarea" placeholder="有什么方法可以让这个习惯更容易坚持？"></textarea>
+                        </div>
+                        
+                        <button class="button button-primary">保存反思</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 提醒设置 -->
+            <div>
+                <h2 class="screen-title">提醒设置</h2>
+                <div class="screen">
+                    <div class="status-bar">
+                        <div class="time">9:41</div>
+                        <div class="status-icons">
+                            <i class="fas fa-signal"></i>
+                            <i class="fas fa-wifi"></i>
+                            <i class="fas fa-battery-full"></i>
+                        </div>
+                    </div>
+                        <div class="content">
+                        <div class="header">
+                            <div class="greeting">提醒设置</div>
+                        </div>
+                        
+                        <div class="toggle-container">
+                            <div class="toggle-label">启用提醒</div>
+                            <div class="toggle active">
+                                <div class="toggle-handle"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">提醒方式</label>
+                            <select class="form-select">
+                                <option>推送通知</option>
+                                <option>短信</option>
+                                <option>邮件</option>
+                                <option>全部</option>
+                            </select>
+                        </div>
+                        
+                        <div class="section-title">
+                            <span>习惯提醒</span>
+                        </div>
+                        
+                        <div class="habit-card">
+                            <div class="habit-info">
+                                <div class="habit-name">晨间阅读</div>
+                                <div class="habit-details">每天 7:00</div>
+                            </div>
+                            <div class="toggle active">
+                                <div class="toggle-handle"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="habit-card">
+                            <div class="habit-info">
+                                <div class="habit-name">冥想</div>
+                                <div class="habit-details">每天 8:00</div>
+                            </div>
+                            <div class="toggle active">
+                                <div class="toggle-handle"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="habit-card">
+                            <div class="habit-info">
+                                <div class="habit-name">喝水</div>
+                                <div class="habit-details">每天 4 次</div>
+                            </div>
+                            <div class="toggle active">
+                                <div class="toggle-handle"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="habit-card">
+                            <div class="habit-info">
+                                <div class="habit-name">锻炼</div>
+                                <div class="habit-details">每天 18:00</div>
+                            </div>
+                            <div class="toggle">
+                                <div class="toggle-handle"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="section-title">
+                            <span>其他提醒</span>
+                        </div>
+                        
+                        <div class="toggle-container">
+                            <div class="toggle-label">每日总结提醒</div>
+                            <div class="toggle active">
+                                <div class="toggle-handle"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="toggle-container">
+                            <div class="toggle-label">周报告提醒</div>
+                            <div class="toggle active">
+                                <div class="toggle-handle"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="toggle-container">
+                            <div class="toggle-label">成就提醒</div>
+                            <div class="toggle active">
+                                <div class="toggle-handle"></div>
+                            </div>
+                        </div>
+                        
+                        <button class="button button-primary">保存设置</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 通知页面 -->
+            <div>
+                <h2 class="screen-title">通知</h2>
+                <div class="screen">
+                    <div class="status-bar">
+                        <div class="time">9:41</div>
+                        <div class="status-icons">
+                            <i class="fas fa-signal"></i>
+                            <i class="fas fa-wifi"></i>
+                            <i class="fas fa-battery-full"></i>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="header">
+                            <div class="greeting">通知</div>
+                        </div>
+                        
+                        <div class="notification">
+                            <div class="notification-icon">
+                                <i class="fas fa-bell"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">该锻炼了</div>
+                                <div class="notification-message">现在是您设定的锻炼时间，点击开始记录您的锻炼。</div>
+                                <div class="notification-time">10分钟前</div>
+                            </div>
+                        </div>
+                        
+                        <div class="notification">
+                            <div class="notification-icon" style="background-color: #4CD964;">
+                                <i class="fas fa-trophy"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">恭喜！新成就解锁</div>
+                                <div class="notification-message">您已经连续21天完成冥想习惯，获得"冥想大师"成就！</div>
+                                <div class="notification-time">2小时前</div>
+                            </div>
+                        </div>
+                        
+                        <div class="notification">
+                            <div class="notification-icon" style="background-color: #FF9500;">
+                                <i class="fas fa-user-friends"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">好友动态</div>
+                                <div class="notification-message">您的好友小红已经连续30天完成晨跑习惯，为她点赞吧！</div>
+                                <div class="notification-time">昨天</div>
+                            </div>
+                        </div>
+                        
+                        <div class="notification">
+                            <div class="notification-icon" style="background-color: #5856D6;">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">周报告已生成</div>
+                                <div class="notification-message">您上周的习惯完成率为92%，比前一周提高了5%！</div>
+                                <div class="notification-time">2天前</div>
+                            </div>
+                        </div>
+                        
+                        <div class="notification">
+                            <div class="notification-icon" style="background-color: #FF2D55;">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="notification-content">
+                                <div class="notification-title">习惯提醒</div>
+                                <div class="notification-message">别忘了今天的喝水习惯，保持水分对健康很重要！</div>
+                                <div class="notification-time">3天前</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 习惯指南 -->
+            <div>
+                <h2 class="screen-title">习惯指南</h2>
+                <div class="screen">
+                    <div class="status-bar">
+                        <div class="time">9:41</div>
+                        <div class="status-icons">
+                            <i class="fas fa-signal"></i>
+                            <i class="fas fa-wifi"></i>
+                            <i class="fas fa-battery-full"></i>
+                        </div>
+                    </div>
+                    <div class="content">
+                        <div class="header">
+                            <div class="greeting">习惯指南</div>
+                        </div>
+                        
+                        <div class="section-title">
+                            <span>习惯养成的四大法则</span>
+                        </div>
+                        
+                        <div class="cue-card">
+                            <div class="cue-title">
+                                <i class="fas fa-eye"></i> 第一法则：让它显而易见
+                            </div>
+                            <div class="cue-description">
+                                通过环境设计和提示，让好习惯的线索更加明显，让坏习惯的线索隐藏起来。
+                            </div>
+                        </div>
+                        
+                        <div class="cue-card">
+                            <div class="cue-title">
+                                <i class="fas fa-heart"></i> 第二法则：让它有吸引力
+                            </div>
+                            <div class="cue-description">
+                                将好习惯与愉悦的体验联系起来，利用期待和社会压力增强习惯的吸引力。
+                            </div>
+                        </div>
+                        
+                        <div class="cue-card">
+                            <div class="cue-title">
+                                <i class="fas fa-check"></i> 第三法则：让它简单易行
+                            </div>
+                            <div class="cue-description">
+                                减少好习惯的阻力，增加坏习惯的阻力，利用"两分钟法则"开始行动。
+                            </div>
+                        </div>
+                        
+                        <div class="cue-card">
+                            <div class="cue-title">
+                                <i class="fas fa-smile"></i> 第四法则：让它令人满足
+                            </div>
+                            <div class="cue-description">
+                                为好习惯提供即时奖励，为坏习惯增加即时成本，使用习惯追踪保持动力。
+                            </div>
+                        </div>
+                        
+                        <div class="section-title">
+                            <span>习惯养成小技巧</span>
+                        </div>
+                        
+                        <div class="habit-card">
+                            <div class="habit-info">
+                                <div class="habit-name">习惯叠加</div>
+                                <div class="habit-details">将新习惯与已有习惯绑定在一起</div>
+                            </div>
+                            <div class="menu-arrow">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="habit-card">
+                            <div class="habit-info">
+                                <div class="habit-name">习惯追踪</div>
+                                <div class="habit-details">记录和可视化你的进步</div>
+                            </div>
+                            <div class="menu-arrow">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="habit-card">
+                            <div class="habit-info">
+                                <div class="habit-name">环境设计</div>
+                                <div class="habit-details">优化你的环境以支持好习惯</div>
+                            </div>
+                            <div class="menu-arrow">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="habit-card">
+                            <div class="habit-info">
+                                <div class="habit-name">习惯契约</div>
+                                <div class="habit-details">与他人约定增加责任感</div>
+                            </div>
+                            <div class="menu-arrow">
+                                <i class="fas fa-chevron-right"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>  
